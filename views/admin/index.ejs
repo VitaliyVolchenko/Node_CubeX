@@ -1,0 +1,44 @@
+<html lang="en">
+
+<%- include ../header.ejs %>
+<!-- Main component for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <h1>Welcome in Admin Area</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-md-center">
+            <h2>Products:</h2>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title:</th>
+                    <th scope="col">Price:</th>
+                    <th scope="col">description:</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <% for(var i=0; i<products.length; i++) {%>
+                    <td><%= products[i].id %></td>
+                    <td><%= products[i].title %></td>
+                    <td><%= products[i].price %>$</td>
+                    <td><%= products[i].description %></td>
+                    <td>
+                        <form action="" method="POST">
+                            <input type="text" name="id" hidden="true" value = "<%= products[i].id %>">
+                            <input type="submit" value="DELETE">
+                        </form>
+                    </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<%- include ../footer.ejs %>
+

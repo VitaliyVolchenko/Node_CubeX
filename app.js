@@ -4,6 +4,7 @@
 var express = require('express')
     , routes = require('./routes')
     , user = require('./routes/user')
+    , admin = require('./routes/admin')
     , http = require('http')
     , path = require('path');
 //var methodOverride = require('method-override');
@@ -35,15 +36,24 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 60000 }
-}))
+}));
+
 
 app.get('/', routes.index);//call for main index page
-app.get('/login', routes.index);//call for login page
+app.get('/login', user.index);//call for login page
 app.get('/signup', user.signup);//call for signup page
 app.post('/login', user.login);//call for login post
 app.post('/signup', user.signup);//call for signup post
 app.get('/home/dashboard', user.dashboard);//call for dashboard page after login
+app.get('/admin/index', admin.products);//call for admin area page after login
+
+
+app.use(function(req, res){
+    res.status(404).send("Page Not Found Sorry")
+});
 
 //Middleware
-app.listen(8080)
+app.listen(8080, ()=>{
+    console.log(`server running on port 8080`)
+})
 
