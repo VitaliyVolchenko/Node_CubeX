@@ -1,12 +1,43 @@
 <html lang="en">
 
-<%- include header %>
+<%- include header.ejs %>
 <!-- Main component for a primary marketing message or call to action -->
 <div class="jumbotron">
-    <h1>Welcome</h1>
-    <p>Hello Dashboard</p>
-    <p>
-        <a class="btn btn-lg btn-primary" href="#" role="button">Profile view »</a>
-    </p>
+    <h1>Welcome in Client Area</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-md-center">
+            <h2>Products:</h2>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title:</th>
+                    <th scope="col">Price:</th>
+                    <th scope="col">Deescription:</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <% for(var i=0; i<products.length; i++) {%>
+                    <td><%= i+1 %></td>
+                    <td><%= products[i].title %></td>
+                    <td><%= products[i].price %>$</td>
+                    <td><%= products[i].description %></td>
+                    <td>
+                        <form action="" method="POST">
+                            <input type="text" name="id" hidden="true" value = "<%= products[i].id %>">
+                            <input type="submit" value="buy this product">
+                        </form>
+                    </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
-<%- include footer %>
+<%- include footer.ejs %>

@@ -1,17 +1,56 @@
-<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Site</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+</head>
 <body>
-<div class="form-group">
-    <div class="col-md-12 control">
-        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-            Don't have an account!
-            <a href="/login">
-                login Here
-            </a>
-        </div><br>
+<div class="container">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav ">
+                    <li><a href="/">Start Page CubeX</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/signup">Register</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="/login">Login</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
+    <div class="jumbotron">
+        <div class="container-fluid">
+            <div class="row justify-content-md-center">
+                <h2>Products:</h2>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title:</th>
+                        <th scope="col">Price:</th>
+                        <th scope="col">description:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <% for(var i=0; i<products.length; i++) {%>
+                        <td><%= i+1 %></td>
+                        <td><%= products[i].title %></td>
+                        <td><%= products[i].price %>$</td>
+                        <td><%= products[i].description %></td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-<div>
-    Start Page
-</div>
-</body>
-</html>
+<%- include footer.ejs %>

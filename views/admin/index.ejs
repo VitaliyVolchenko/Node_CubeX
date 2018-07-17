@@ -4,6 +4,7 @@
 <!-- Main component for a primary marketing message or call to action -->
 <div class="jumbotron">
     <h1>Welcome in Admin Area</h1>
+    <h2><a href="product/add">ADD NEW PRODUCT</a></h2>
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <h2>Products:</h2>
@@ -15,7 +16,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Title:</th>
                     <th scope="col">Price:</th>
-                    <th scope="col">description:</th>
+                    <th scope="col">Deescription:</th>
+                    <th scope="col">Created_at:</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -26,6 +28,7 @@
                     <td><%= products[i].title %></td>
                     <td><%= products[i].price %>$</td>
                     <td><%= products[i].description %></td>
+                    <td><%= products[i].created_at %></td>
                     <td>
                         <form action="" method="POST">
                             <input type="text" name="id" hidden="true" value = "<%= products[i].id %>">

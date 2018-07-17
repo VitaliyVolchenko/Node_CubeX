@@ -1,28 +1,74 @@
 exports.products = function(req, res) {
-
+    var userId = req.session.userId, roleId = req.session.roleId;
+    if(userId == null){
+        res.redirect("/login");
+        return;
+    }
+    if(roleId !== 1){
+        res.redirect("/home/dashboard");
+        return;
+    }
+    var products ='';
     var sql="SELECT * FROM `products`";
 
     var query = db.query(sql, function(err, results){
-        console.log(err);
         var products = results;
-        console.log(products);
+
         res.render('admin/index.ejs',{products: products});
     });
 };
 
-/*
-exports.products = function(req, res) {
-    var message = '';
-    res.render('admin/index.ejs', {message: message});
-}*/
+exports.productDel = function(req, res) {
+    var products = '';
 
-/*var query = db.query(sql, function(err, result) {
+    var post = req.body;
+    var id = post.id;
 
-    message = "Succesfully! Your account has been created.";
-    res.render('signup.ejs',{message: message});
-});*/
+    var sql = "DELETE FROM `products` WHERE `id`='"+id+"'";
 
-/*var productId = results[0].id;
-        var title = results[0].title;
-        var description = results[0].description;
-*/
+    var query = db.query(sql, function (err, results) {
+
+        res.redirect('/admin/index');
+    });
+
+};
+
+exports.productAdd = function(req, res) {
+
+    var userId = req.session.userId, roleId = req.session.roleId;
+    if(userId == null){
+        res.redirect("/login");
+        return;
+    }
+    if(roleId !== 1){
+        res.redirect("/home/dashboard");
+        return;
+    }
+
+    var message ='';
+
+    res.render('admin/product.ejs',{message: message});
+};
+
+exports.productSave = function(req, res) {
+
+    var products = '';
+
+    var post = req.body;
+    var id = post.id;
+    var title = post.title;
+    var price = post.price;
+    var description = post.description;
+
+    var sql = "INSERT INTO `products`(`title`,`price`,`description`) " +
+            "VALUES ('" + title + "','" + price + "','" + description + "')";
+
+    var query = db.query(sql, function (err, results) {
+
+            res.redirect('/admin/index');
+        });
+};
+
+/*console.log(err);
+        var products = results;
+        console.log(products);*/

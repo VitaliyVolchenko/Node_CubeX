@@ -6,33 +6,32 @@ exports.index = function(req, res) {
 exports.login = function(req, res){
     var message = '';
     var sess = req.session;
-    var admin = 'admin';
+    var rolId = '1';
 
     if(req.method === "POST"){
         var post  = req.body;
         var name= post.user_name;
         var pass= post.password;
 
-        var sql="SELECT id, first_name, last_name, user_name, password FROM `users` WHERE `user_name`='"+name+"' and password = '"+pass+"'";
+        var sql="SELECT id, first_name, last_name, user_name, password, role_id FROM `users` WHERE `user_name`='"+name+"' and password = '"+pass+"'";
 
         db.query(sql, function(err, results){
 
             if(results.length){
                 req.session.userId = results[0].id;
+                req.session.roleId = results[0].role_id;
                 req.session.user = results[0];
-
-                if(results[0].user_name === admin && pass === results[0].password ){
+                //console.log(sess, 'AAAAAAAAAAAA');
+                if(results[0].role_id == rolId){
                     res.redirect('/admin/index');
                 } else {
                     console.log(results[0].id);
                     res.redirect('/home/dashboard');
                 }
 
-
-            }
-            else {
+            } else {
                 message = 'Wrong Credentials.';
-                res.render('index.ejs',{message: message});
+                res.render('login.ejs',{message: message});
             }
 
         });
@@ -68,42 +67,26 @@ exports.signup = function(req, res){
 
 exports.dashboard = function(req, res, next){
 
-    var user =  req.session.user,
-        userId = req.session.userId;
+    var userId = req.session.userId;
 
     if(userId == null){
-        res.redirect("/home/login");
+        res.redirect("/login");
         return;
     }
 
-    var sql="SELECT * FROM `login_details` WHERE `id`='"+userId+"'";
+    var products ='';
+    var sql="SELECT * FROM `products`";
 
-    db.query(sql, function(err, results){
+    var query = db.query(sql, function(err, results){
+        var products = results;
 
-        console.log(results);
-
-        res.render('profile.ejs', {user:user});
-
+        res.render('profile.ejs',{products: products});
     });
 };
 
-exports.adminka = function(req, res, next){
-
-    var user =  req.session.user,
-        userId = req.session.userId;
-
-    if(userId == null){
-        res.redirect("/home/login");
-        return;
-    }
-
-    var sql="SELECT * FROM `login_details` WHERE `id`='"+userId+"'";
-
-    db.query(sql, function(err, results){
-
-        console.log(results);
-
-        res.render('admin/index.ejs', {user:user});
-
-    });
+exports.logout = function (req, res, next){
+    req.session.destroy();
+    res.redirect('/');
 };
+
+

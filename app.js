@@ -44,9 +44,12 @@ app.get('/login', user.index);//call for login page
 app.get('/signup', user.signup);//call for signup page
 app.post('/login', user.login);//call for login post
 app.post('/signup', user.signup);//call for signup post
+app.get('/logout', user.logout);//call for user logout
 app.get('/home/dashboard', user.dashboard);//call for dashboard page after login
 app.get('/admin/index', admin.products);//call for admin area page after login
-
+app.post('/admin/index', admin.productDel);//call for delete product
+app.get('/admin/product/add', admin.productAdd);//call for admin/product/add page
+app.post('/admin/product/add', admin.productSave);
 
 app.use(function(req, res){
     res.status(404).send("Page Not Found Sorry")

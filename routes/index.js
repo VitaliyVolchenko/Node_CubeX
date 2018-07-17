@@ -3,6 +3,17 @@
 */
 
 exports.index = function(req, res) {
-    var message = '';
-    res.render('index.ejs', {message: message});
+
+    var sql="SELECT * FROM `products`";
+    var products ='';
+
+    console.log(products);
+
+    var query = db.query(sql, function(err, results){
+
+        var products = results;
+
+        res.render('index.ejs',{products: products});
+    });
+
 }
