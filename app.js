@@ -5,9 +5,11 @@ var express = require('express')
     , routes = require('./routes')
     , user = require('./routes/user')
     , admin = require('./routes/admin')
+    , validator = require('express-validator')
     , http = require('http')
     , path = require('path');
 //var methodOverride = require('method-override');
+const saltRounds = 10;
 var app = express();
 var mysql      = require('mysql');
 var bodyParser=require("body-parser");
@@ -17,7 +19,6 @@ var connection = mysql.createConnection({
     password : 'qa123123',
     database : 'node_cubex'
 });
-
 var session = require('express-session');
 
 connection.connect();
@@ -37,6 +38,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { maxAge: 60000 }
 }));
+app.use(validator());
 
 
 app.get('/', routes.index);//call for main index page

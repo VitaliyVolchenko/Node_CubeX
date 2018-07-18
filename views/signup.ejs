@@ -15,11 +15,24 @@
                 <div class="panel-title">Sign Up</div>
                 <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="/login">Sign In</a></div>
             </div>
+            <div>
+                <% if (errors) { %>
+                        <% for(var i=0; i<errors.length; i++) {%>
+                        <div class="alert alert-danger col-sm-12"><%= errors[i].msg %></div>
+                        <% } %>
+                <% } %>
+            </div>
+            <div>
+                <% if (mess.length > 0) { %>
+                <div class="alert alert-danger col-sm-12"><%= mess %></div>
+                <% } %>
+            </div>
             <div class="panel-body" >
                 <form class="form-horizontal" role="form" method="post" action="/signup" onSubmit="return checkblank(this);">
                     <% if (message.length > 0) { %>
                     <div class="alert alert-success col-sm-12"><%= message %></div>
                     <% } %>
+
                     <div id="signupalert" style="display:none" class="alert alert-danger">
                         <p>Error:</p>
                         <span></span>
@@ -53,6 +66,12 @@
                         <label for="password" class="col-md-3 control-label">Password</label>
                         <div class="col-md-9">
                             <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="col-md-3 control-label">Confirm Password</label>
+                        <div class="col-md-9">
+                            <input type="password" class="form-control" name="confpass" placeholder="Confirm Password" required>
                         </div>
                     </div>
 
