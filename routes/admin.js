@@ -14,6 +14,14 @@ exports.products = function(req, res) {
     var query = db.query(sql, function(err, results){
         var products = results;
 
+        for(var i=0; i<products.length; i++) {
+            var d = new Date(products[i].created_at);
+            console.log(products[i].created_at);
+            products[i].created_at = d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear()+
+                "  "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+            console.log(products[i].created_at);
+        }
+
         res.render('admin/index.ejs',{products: products});
     });
 };
@@ -27,7 +35,8 @@ exports.productDel = function(req, res) {
     var sql = "DELETE FROM `products` WHERE `id`='"+id+"'";
 
     var query = db.query(sql, function (err, results) {
-
+        console.log(err);
+        console.log(results);
         res.redirect('/admin/index');
     });
 

@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 var express = require('express')
+    , stripe = require("stripe")("sk_test_FVg7n3n3FHizeJeDRMy4Xx4g")
     , routes = require('./routes')
     , user = require('./routes/user')
     , admin = require('./routes/admin')
@@ -47,11 +48,18 @@ app.get('/signup', user.signup);//call for signup page
 app.post('/login', user.login);//call for login post
 app.post('/signup', user.signup);//call for signup post
 app.get('/logout', user.logout);//call for user logout
+
 app.get('/home/dashboard', user.dashboard);//call for dashboard page after login
+app.post('/home/dashboard', user.buy);//call for user buying(stripe)
+app.get('/home/orders', user.orders);//call for cart page
+
+//app.post('/charge', functio(req, res){ )
+
 app.get('/admin/index', admin.products);//call for admin area page after login
 app.post('/admin/index', admin.productDel);//call for delete product
 app.get('/admin/product/add', admin.productAdd);//call for admin/product/add page
 app.post('/admin/product/add', admin.productSave);
+
 
 app.use(function(req, res){
     res.status(404).send("Page Not Found Sorry")

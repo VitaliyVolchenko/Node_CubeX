@@ -1,7 +1,26 @@
 <html lang="en">
-
-<%- include header.ejs %>
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Site</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+</head>
+<body>
+<div class="container">
 <!-- Main component for a primary marketing message or call to action -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav ">
+                <li class="active"><a href="/home/orders">Orders Page</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/login">Login</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
 <div class="jumbotron">
     <h1>Welcome in Client Area</h1>
     <div class="container-fluid">
@@ -16,6 +35,7 @@
                     <th scope="col">Title:</th>
                     <th scope="col">Price:</th>
                     <th scope="col">Deescription:</th>
+                    <th scope="col">Created_at:</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -26,10 +46,24 @@
                     <td><%= products[i].title %></td>
                     <td><%= products[i].price %>$</td>
                     <td><%= products[i].description %></td>
+                    <td><%= products[i].created_at %></td>
                     <td>
-                        <form action="" method="POST">
+                        <form action="/home/dashboard" method="POST">
+                            <!--<input type="text" name="id" hidden="true" value = "<%= products[i].id %>">
+                            <input type="submit" value="buy this product">-->
+                            <script
+                            src = "//checkout.stripe.com/v2/checkout.js"
+                            class="stripe-button",
+                            data-key="pk_test_S08gPITTyv7oii0xexdw3qu7",
+                            date-name="product",
+                            data-locale="auto",
+                            data-description="Sample Charge",
+                            data-amount="<%= products[i].price*100 %>"
+                            data-currency="gbp"
+                            >
+                            </script>
+                            <input type="text" name="chargeAmount" hidden="true" value = "<%= products[i].price%>">
                             <input type="text" name="id" hidden="true" value = "<%= products[i].id %>">
-                            <input type="submit" value="buy this product">
                         </form>
                     </td>
                 </tr>

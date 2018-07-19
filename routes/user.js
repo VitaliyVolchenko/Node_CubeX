@@ -5,7 +5,6 @@ exports.index = function(req, res) {
 
 exports.login = function(req, res){
     var message = '';
-    var sess = req.session;
     var rolId = '1';
     var saltRounds = 10;
 
@@ -21,7 +20,7 @@ exports.login = function(req, res){
                     req.session.userId = results[0].id;
                     req.session.roleId = results[0].role_id;
                     req.session.user = results[0];
-                    //console.log(sess, 'AAAAAAAAAAAA');
+                    //console.log(req.session, 'AAAAAAAAAAAA');
                     if(results[0].role_id == rolId){
                         res.redirect('/admin/index');
                     } else {
@@ -124,6 +123,13 @@ exports.dashboard = function(req, res, next){
     var query = db.query(sql, function(err, results){
         var products = results;
 
+        for(var i=0; i<products.length; i++) {
+            var d = new Date(products[i].created_at);
+            console.log(products[i].created_at);
+            products[i].created_at = d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear()+
+                "  "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+            console.log(products[i].created_at);
+        }
         res.render('profile.ejs',{products: products});
     });
 };
@@ -133,4 +139,64 @@ exports.logout = function (req, res, next){
     res.redirect('/');
 };
 
+exports.buy = function(req, res) {
+
+    var userId = req.session.userId;
+    var stripe = require("stripe")("sk_test_FVg7n3n3FHizeJeDRMy4Xx4g")
+    var post = req.body;
+    var id = post.id;
+    req.session.prodId = id;
+    var token = post.stripeToken;
+    var chargeAmount = post.chargeAmount*100;
+    var charge = stripe.charges.create({
+        amount: chargeAmount,
+        currency: token,
+        source: token
+    }, function(err, charge) {
+        if (err & err.type === "StripeCardError") {
+            console.log("Your card was decliend");
+        }
+    });
+
+    //req.session.
+
+        var sql = "INSERT INTO `orders`(`user_id`,`product_id`) " +
+            "VALUES ('" + userId + "','" + id + "')";
+
+        var query = db.query(sql, function (err, results) {
+            console.log("Your payment was successful!");
+            res.redirect('/home/orders');
+        });
+}
+
+exports.orders = function(req, res) {
+
+    var userId = req.session.userId;
+    var prodId = req.session.prodId;
+
+    console.log(userId);
+
+    if(userId == null){
+        res.redirect("/login");
+        return;
+    }
+
+    var sql = "SELECT `products`.title, `products`.price, `products`.description, `orders`.created_at FROM `products`" +
+        "INNER JOIN `orders` ON `products`.id = `orders`.product_id AND `orders`.user_id = '" + userId + "' ORDER BY `orders`.created_at DESC";
+    var query = db.query(sql, function (err, results) {
+        console.log(results);
+
+        var orders = results;
+        for(var i=0; i<orders.length; i++) {
+            var d = new Date(orders[i].created_at);
+            console.log(orders[i].created_at);
+            orders[i].created_at = d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear()+
+                "  "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+            console.log(orders[i].created_at);
+        }
+
+        res.render('orders.ejs',{orders: orders});
+    });
+
+};
 

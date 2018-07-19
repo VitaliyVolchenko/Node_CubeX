@@ -1,13 +1,21 @@
 <html lang="en">
 
-<%- include ../header.ejs %>
+<%- include header.ejs %>
 <!-- Main component for a primary marketing message or call to action -->
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div ckass="alert alert-success">
+            <p>
+
+            </p>
+        </div>
+    </div>
+</div>
 <div class="jumbotron">
-    <h1>Welcome in Admin Area</h1>
-    <h2><a href="product/add">ADD NEW PRODUCT</a></h2>
+    <h1>Welcome in Orders Area</h1>
     <div class="container-fluid">
         <div class="row justify-content-md-center">
-            <h2>Products:</h2>
+            <h2>Orders:</h2>
         </div>
         <div class="row">
             <table class="table">
@@ -18,23 +26,16 @@
                     <th scope="col">Price:</th>
                     <th scope="col">Deescription:</th>
                     <th scope="col">Created_at:</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <% for(var i=0; i<products.length; i++) {%>
+                    <% for(var i=0; i<orders.length; i++) {%>
                     <td><%= i+1 %></td>
-                    <td><%= products[i].title %></td>
-                    <td><%= products[i].price %>$</td>
-                    <td><%= products[i].description %></td>
-                    <td><%= products[i].created_at %></td>
-                    <td>
-                        <form action="" method="POST">
-                            <input type="text" name="id" hidden="true" value = "<%= products[i].id %>">
-                            <input type="submit" value="DELETE">
-                        </form>
-                    </td>
+                    <td><%= orders[i].title %></td>
+                    <td><%= orders[i].price %>$</td>
+                    <td><%= orders[i].description %></td>
+                    <td><%= orders[i].created_at %></td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -43,5 +44,4 @@
     </div>
 
 </div>
-<%- include ../footer.ejs %>
-
+<%- include footer.ejs %>
