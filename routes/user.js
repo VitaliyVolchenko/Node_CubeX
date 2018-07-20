@@ -7,7 +7,6 @@ exports.login = function(req, res){
     var message = '';
     var rolId = '1';
     var saltRounds = 10;
-
     if(req.method === "POST"){
         var post  = req.body;
         var name = post.user_name;
@@ -15,7 +14,14 @@ exports.login = function(req, res){
 
         var sql="SELECT * FROM `users` WHERE `user_name`='"+name+"' ";
         var query =  db.query(sql, function(err, results){
+            console.log(results[0],"Resoult");
+            if(results[0] === undefined){
+                message = 'That user name not exist'
+                return res.render('login.ejs',{message: message});
+            }
+
             require('bcrypt').compare(pass, results[0].password, function(err, same) {
+
                 if(same){
                     req.session.userId = results[0].id;
                     req.session.roleId = results[0].role_id;
@@ -37,13 +43,12 @@ exports.login = function(req, res){
 
         });
 
-
     } else {
-        res.render('index.ejs',{message: message});
+        res.redirect('/',{message: message});
     }
 };
 
-//check unique user_name
+//check unique user_name(exist user in db or not)
 check = function(name,cb){
 
     sql="SELECT id, first_name, last_name, user_name, password, role_id FROM `users` WHERE" +
@@ -65,19 +70,28 @@ exports.signup = function(req, res){
         var post  = req.body;
         var name = post.user_name;
         var pass = post.password;
-        var confpass = post.confpass;
         var fname = post.first_name;
         var lname = post.last_name;
         var email = post.email;
         var saltRounds = 10;
-        //validation email and password
-        req.check("email", "Enter a valid email address.").isEmail();
-        req.check("confpass", "Enter a valid password.").isLength({min: 4});
-        req.check("confpass", "Enter a valid confirm password.").equals(pass);
+
+        req.check("first_name", "Enter first name 3-40 chars!").isLength({min: 3, max: 40});
+        req.check("first_name", "Enter letters in first_name!").isAlpha();
+
+        req.check("last_name", "Enter last name 3-40 chars!").isLength({min: 3, max: 40});
+        req.check("last_name", "Enter letters in last_name!").isAlpha();
+
+        req.check("email", "Enter a valid email address!").isEmail();
+
+        req.check("user_name", "Enter last name 3-40 chars!").isLength({min: 3, max: 40});
+
+        req.check("confpass", "Enter a valid password!").isLength({min: 4});
+        req.check("confpass", "Enter valid confirm password!").equals(pass);
 
         let errors = req.validationErrors();
         if (errors){
             req.session.errors = errors;
+            console.log(req.session.error);
             res.redirect('back');
             return;
         }
@@ -105,6 +119,7 @@ exports.signup = function(req, res){
 
     } else {
         res.render('signup',{errors:req.session.errors});
+        req.session.destroy();
     }
 };
 

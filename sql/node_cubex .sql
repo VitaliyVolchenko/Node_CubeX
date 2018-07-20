@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 19, 2018 at 05:53 PM
+-- Generation Time: Jul 20, 2018 at 01:40 PM
 -- Server version: 5.7.22-0ubuntu18.04.1
 -- PHP Version: 7.2.7-0ubuntu0.18.04.2
 
@@ -41,8 +41,7 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `user_id`, `product_id`, `created_at`) VALUES
 (14, 20, 8, '2018-07-19 14:42:28'),
-(15, 20, 9, '2018-07-19 14:43:17'),
-(16, 25, 8, '2018-07-19 14:45:51');
+(15, 20, 9, '2018-07-19 14:43:17');
 
 -- --------------------------------------------------------
 
@@ -93,10 +92,10 @@ INSERT INTO `roles` (`id`, `name`) VALUES
 
 CREATE TABLE `users` (
   `id` int(5) NOT NULL,
-  `first_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `role_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -111,7 +110,7 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `user_name`, `pas
 (22, 'zxc', 'zxc', 'zxc@zxc.com', 'zxc', '$2b$10$U7ymdXrWK8ZN66jkB0dn/.UuuxXUu6UO.O4OYMm3326WN1ux7Flmm', 2),
 (23, '2', '3', '2345@we.ru', '23', '$2b$10$E239leZl8CPIkpvoGGBD.u9382lX3szBt/6CGuXqgKT9vbhPuabUy', 2),
 (24, '1', '1', '1@11.com', '1', '$2b$10$2Eo8nSTZAG.oJuVq5gLTXO1qZOvnRMk9cQOCVlktQ7nguLl3xYasW', 2),
-(25, 'qqq', 'qqq', 'qqq@qqq.ru', 'qqq', '$2b$10$vXBK4ee.m95L6QM3VSKcR.cdEtcck6c6IcPT0jvU/GiyplXfINE8S', 2);
+(46, 'qqqqq', 'qqqqq', 'qqq@mail.com', 'qqqqq', '$2b$10$qRfFZCBjOjyw7e1D72RDSeaW6xMXgJ5rkVa5m2tV42Q5Fz4hxMjDS', 2);
 
 --
 -- Indexes for dumped tables
@@ -122,8 +121,8 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `user_name`, `pas
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `orders_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `products`
@@ -154,13 +153,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -172,7 +171,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Constraints for dumped tables
@@ -182,7 +181,7 @@ ALTER TABLE `users`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

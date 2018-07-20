@@ -1,4 +1,5 @@
 exports.products = function(req, res) {
+
     var userId = req.session.userId, roleId = req.session.roleId;
     if(userId == null){
         res.redirect("/login");
@@ -56,10 +57,12 @@ exports.productAdd = function(req, res) {
 
     var message ='';
 
-    res.render('admin/product.ejs',{message: message});
+    res.render('admin/product.ejs',{message: message, errors:req.session.errors});
 };
 
 exports.productSave = function(req, res) {
+
+    console.log('---------------------------------------', req.body);
 
     var products = '';
 
@@ -69,12 +72,29 @@ exports.productSave = function(req, res) {
     var price = post.price;
     var description = post.description;
 
+    req.check("title", "Enter title 3-40 chars!").isLength({min: 3, max: 40});
+
+    req.check("price", "Enter price 1-5 chars!").isLength({min: 1, max: 5});
+    req.check("price", "Enter price number!").isNumeric();
+
+    req.check("description", "Enter description min 4 chars!").isLength({min: 4});
+
+    let errors = req.validationErrors();
+    if (errors){
+        req.session.errors = errors;
+        console.log(req.session.errors);
+        res.render('admin/product.ejs',{errors:req.session.errors});
+        return;
+    }
+
     var sql = "INSERT INTO `products`(`title`,`price`,`description`) " +
             "VALUES ('" + title + "','" + price + "','" + description + "')";
 
     var query = db.query(sql, function (err, results) {
-
+            console.log(results, "aaaaaaaaaaaa")
+            console.log(err, "qqqqqqqqqqqqqq")
             res.redirect('/admin/index');
+            //req.session.destroy();
         });
 };
 

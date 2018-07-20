@@ -8,7 +8,14 @@
         <h2>Page create new product</h2><br>
     </div>
     <div>
-        <form action="" method="POST">
+            <% if (errors) { %>
+                <% for(var i=0; i<errors.length; i++) {%>
+                <div class="alert alert-danger col-sm-12"><%= errors[i].msg %></div>
+                <% } %>
+            <% } %>
+    </div><br>
+    <div>
+        <form action="/admin/product/add" method="POST">
             <div>
                 <input type="text" name="id" hidden="true" >
             </div>
@@ -18,14 +25,14 @@
             </div><br>
             <div>
                 <label for="price">Price:</label><br>
-                <input type="text" name="price" required>
+                <input type="number" name="price" placeholder="enter number" required>
             </div><br>
             <div>
-                <label for="price">Description:</labe><br>
+                <label for="description">Description:</label><br>
                 <textarea style="width:500px;height:100px;" name="description" required></textarea>
             </div>
             <div>
-                <input type="submit" value="SAVE NEW PRODUCT">
+                <button>SAVE NEW PRODUCT _</button>
             </div>
         </form>
     </div>

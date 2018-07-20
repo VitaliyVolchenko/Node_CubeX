@@ -16,7 +16,7 @@
                 <li class="active"><a href="/home/orders">Orders Page</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/login">Login</a></li>
+                <li class="active"><a href="/logout">Logout</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
@@ -49,8 +49,6 @@
                     <td><%= products[i].created_at %></td>
                     <td>
                         <form action="/home/dashboard" method="POST">
-                            <!--<input type="text" name="id" hidden="true" value = "<%= products[i].id %>">
-                            <input type="submit" value="buy this product">-->
                             <script
                             src = "//checkout.stripe.com/v2/checkout.js"
                             class="stripe-button",

@@ -30,22 +30,22 @@ global.db = connection;
 app.set('port', process.env.PORT || 8080);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 6000000000000 }
 }));
 app.use(validator());
 
 
 app.get('/', routes.index);//call for main index page
-app.get('/login', user.index);//call for login page
+app.get('/login', isAUth,user.index);//call for login page
 app.get('/signup', user.signup);//call for signup page
-app.post('/login', user.login);//call for login post
+app.post('/login',isAUth, user.login);//call for login post
 app.post('/signup', user.signup);//call for signup post
 app.get('/logout', user.logout);//call for user logout
 
@@ -70,3 +70,12 @@ app.listen(8080, ()=>{
     console.log(`server running on port 8080`)
 })
 
+function isAUth(req,res,next) {
+    if(req.session.user){
+        res.redirect('back');
+    }
+    else{
+        next();
+    }
+
+}
